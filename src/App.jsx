@@ -84,7 +84,12 @@ const HomePage = ({ setPage, completedCount, totalCount }) => (
     </p>
 
     { completedCount > 0 && <p className="mt-6 text-md font-medium text-gray-700 dark:text-gray-300">
-      You've completed <span className="text-green-600 dark:text-green-400 font-semibold">{completedCount}</span> of {totalCount} problems. Keep up the great work!
+You've completed 
+<span className="mx-1 text-green-600 dark:text-green-400 text-2xl font-semibold">
+  {completedCount}
+</span> 
+of {totalCount} problems. Keep up the great work!
+
     </p>}
 
     <button
