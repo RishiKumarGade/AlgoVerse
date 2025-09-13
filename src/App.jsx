@@ -51,13 +51,13 @@ const PlatformIcon = ({ platform, className }) => {
         <div className={className}>
           {/* Light mode icon */}
           <img
-            src="/public/leetcode_light.png"
+            src="/leetcode_light.png"
             alt="LeetCode Light Icon"
             className="block dark:hidden"
           />
           {/* Dark mode icon */}
           <img
-            src="/public/leetcode_dark.png"
+            src="/leetcode_dark.png"
             alt="LeetCode Dark Icon"
             className="hidden dark:block"
           />
@@ -83,9 +83,9 @@ const HomePage = ({ setPage, completedCount, totalCount }) => (
       Your structured guide to mastering algorithmic patterns. Track your progress, create custom problem sets, and conquer the coding interview.
     </p>
 
-    <p className="mt-6 text-md font-medium text-gray-700 dark:text-gray-300">
+    { completedCount > 0 && <p className="mt-6 text-md font-medium text-gray-700 dark:text-gray-300">
       You've completed <span className="text-green-600 dark:text-green-400 font-semibold">{completedCount}</span> of {totalCount} problems. Keep up the great work!
-    </p>
+    </p>}
 
     <button
       onClick={() => setPage('patterns')}
