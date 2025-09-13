@@ -20778,6 +20778,356 @@
       "problem_link": "https://leetcode.com/problems/reformat-the-string/",
       "platform": "LeetCode",
       "pattern_index": 207
+    },
+    {
+      "problem_title": "Build Array Where You Can Find The Maximum Exactly K Comparisons",
+      "problem_id": 1420,
+      "problem_link": "https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Minimum Number of Frogs Croaking",
+      "problem_id": 1419,
+      "problem_link": "https://leetcode.com/problems/minimum-number-of-frogs-croaking/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Display Table of Food Orders in a Restaurant",
+      "problem_id": 1418,
+      "problem_link": "https://leetcode.com/problems/display-table-of-food-orders-in-a-restaurant/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Reformat The String",
+      "problem_id": 1417,
+      "problem_link": "https://leetcode.com/problems/reformat-the-string/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Number of Ways to Wear Different Hats to Each Other",
+      "problem_id": 1434,
+      "problem_link": "https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Check If a String Can Break Another String",
+      "problem_id": 1433,
+      "problem_link": "https://leetcode.com/problems/check-if-a-string-can-break-another-string/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Max Difference You Can Get From Changing an Integer",
+      "problem_id": 1432,
+      "problem_link": "https://leetcode.com/problems/max-difference-you-can-get-from-changing-an-integer/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Kids With the Greatest Number of Candies",
+      "problem_id": 1431,
+      "problem_link": "https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Number of Ways to Paint N \u00d7 3 Grid",
+      "problem_id": 1411,
+      "problem_link": "https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "HTML Entity Parser",
+      "problem_id": 1410,
+      "problem_link": "https://leetcode.com/problems/html-entity-parser/",
+      "platform": "LeetCode",
+      "pattern_index": 263
+    },
+    {
+      "problem_title": "Queries on a Permutation With Key",
+      "problem_id": 1409,
+      "problem_link": "https://leetcode.com/problems/queries-on-a-permutation-with-key/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "String Matching in an Array",
+      "problem_id": 1408,
+      "problem_link": "https://leetcode.com/problems/string-matching-in-an-array/",
+      "platform": "LeetCode",
+      "pattern_index": 263
+    },
+    {
+      "problem_title": "Capital Gain/Loss",
+      "problem_id": 1393,
+      "problem_link": "https://leetcode.com/problems/capital-gainloss/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Stone Game III",
+      "problem_id": 1406,
+      "problem_link": "https://leetcode.com/problems/stone-game-iii/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Number of Steps to Reduce a Number in Binary Representation to One",
+      "problem_id": 1404,
+      "problem_link": "https://leetcode.com/problems/number-of-steps-to-reduce-a-number-in-binary-representation-to-one/",
+      "platform": "LeetCode",
+      "pattern_index": 283
+    },
+    {
+      "problem_title": "Minimum Subsequence in Non-Increasing Order",
+      "problem_id": 1403,
+      "problem_link": "https://leetcode.com/problems/minimum-subsequence-in-non-increasing-order/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Total Sales Amount by Year",
+      "problem_id": 1384,
+      "problem_link": "https://leetcode.com/problems/total-sales-amount-by-year/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Restore The Array",
+      "problem_id": 1416,
+      "problem_link": "https://leetcode.com/problems/restore-the-array/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "The k-th Lexicographical String of All Happy Strings of Length n",
+      "problem_id": 1415,
+      "problem_link": "https://leetcode.com/problems/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/",
+      "platform": "LeetCode",
+      "pattern_index": 285
+    },
+    {
+      "problem_title": "Find the Minimum Number of Fibonacci Numbers Whose Sum Is K",
+      "problem_id": 1414,
+      "problem_link": "https://leetcode.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Minimum Value to Get Positive Step by Step Sum",
+      "problem_id": 1413,
+      "problem_link": "https://leetcode.com/problems/minimum-value-to-get-positive-step-by-step-sum/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Find All Good Strings",
+      "problem_id": 1397,
+      "problem_link": "https://leetcode.com/problems/find-all-good-strings/",
+      "platform": "LeetCode",
+      "pattern_index": 263
+    },
+    {
+      "problem_title": "Design Underground System",
+      "problem_id": 1396,
+      "problem_link": "https://leetcode.com/problems/design-underground-system/",
+      "platform": "LeetCode",
+      "pattern_index": 300
+    },
+    {
+      "problem_title": "Count Number of Teams",
+      "problem_id": 1395,
+      "problem_link": "https://leetcode.com/problems/count-number-of-teams/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Find Lucky Integer in an Array",
+      "problem_id": 1394,
+      "problem_link": "https://leetcode.com/problems/find-lucky-integer-in-an-array/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Replace Employee ID With The Unique Identifier",
+      "problem_id": 1378,
+      "problem_link": "https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Longest Happy Prefix",
+      "problem_id": 1392,
+      "problem_link": "https://leetcode.com/problems/longest-happy-prefix/",
+      "platform": "LeetCode",
+      "pattern_index": 263
+    },
+    {
+      "problem_title": "Check if There is a Valid Path in a Grid",
+      "problem_id": 1391,
+      "problem_link": "https://leetcode.com/problems/check-if-there-is-a-valid-path-in-a-grid/",
+      "platform": "LeetCode",
+      "pattern_index": 41
+    },
+    {
+      "problem_title": "Create Target Array in the Given Order",
+      "problem_id": 1389,
+      "problem_link": "https://leetcode.com/problems/create-target-array-in-the-given-order/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Get the Second Most Recent Activity",
+      "problem_id": 1369,
+      "problem_link": "https://leetcode.com/problems/get-the-second-most-recent-activity/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Reducing Dishes",
+      "problem_id": 1402,
+      "problem_link": "https://leetcode.com/problems/reducing-dishes/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Construct K Palindrome Strings",
+      "problem_id": 1400,
+      "problem_link": "https://leetcode.com/problems/construct-k-palindrome-strings/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Circle and Rectangle Overlapping",
+      "problem_id": 1401,
+      "problem_link": "https://leetcode.com/problems/circle-and-rectangle-overlapping/",
+      "platform": "LeetCode",
+      "pattern_index": 293
+    },
+    {
+      "problem_title": "Count Largest Group",
+      "problem_id": 1399,
+      "problem_link": "https://leetcode.com/problems/count-largest-group/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Maximum Performance of a Team",
+      "problem_id": 1383,
+      "problem_link": "https://leetcode.com/problems/maximum-performance-of-a-team/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Find a Corresponding Node of a Binary Tree in a Clone of That Tree",
+      "problem_id": 1379,
+      "problem_link": "https://leetcode.com/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/",
+      "platform": "LeetCode",
+      "pattern_index": 289
+    },
+    {
+      "problem_title": "Design a Stack With Increment Operation",
+      "problem_id": 1381,
+      "problem_link": "https://leetcode.com/problems/design-a-stack-with-increment-operation/",
+      "platform": "LeetCode",
+      "pattern_index": 300
+    },
+    {
+      "problem_title": "Lucky Numbers in a Matrix",
+      "problem_id": 1380,
+      "problem_link": "https://leetcode.com/problems/lucky-numbers-in-a-matrix/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Number of Trusted Contacts of a Customer",
+      "problem_id": 1364,
+      "problem_link": "https://leetcode.com/problems/number-of-trusted-contacts-of-a-customer/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Activity Participants",
+      "problem_id": 1355,
+      "problem_link": "https://leetcode.com/problems/activity-participants/",
+      "platform": "LeetCode",
+      "pattern_index": 259
+    },
+    {
+      "problem_title": "Frog Position After T Seconds",
+      "problem_id": 1377,
+      "problem_link": "https://leetcode.com/problems/frog-position-after-t-seconds/",
+      "platform": "LeetCode",
+      "pattern_index": 41
+    },
+    {
+      "problem_title": "Time Needed to Inform All Employees",
+      "problem_id": 1376,
+      "problem_link": "https://leetcode.com/problems/time-needed-to-inform-all-employees/",
+      "platform": "LeetCode",
+      "pattern_index": 41
+    },
+    {
+      "problem_title": "Number of Times Binary String Is Prefix-Aligned",
+      "problem_id": 1375,
+      "problem_link": "https://leetcode.com/problems/number-of-times-binary-string-is-prefix-aligned/",
+      "platform": "LeetCode",
+      "pattern_index": 263
+    },
+    {
+      "problem_title": "Generate a String With Characters That Have Odd Counts",
+      "problem_id": 1374,
+      "problem_link": "https://leetcode.com/problems/generate-a-string-with-characters-that-have-odd-counts/",
+      "platform": "LeetCode",
+      "pattern_index": 281
+    },
+    {
+      "problem_title": "Pizza With 3n Slices",
+      "problem_id": 1388,
+      "problem_link": "https://leetcode.com/problems/pizza-with-3n-slices/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Sort Integers by The Power Value",
+      "problem_id": 1387,
+      "problem_link": "https://leetcode.com/problems/sort-integers-by-the-power-value/",
+      "platform": "LeetCode",
+      "pattern_index": 282
+    },
+    {
+      "problem_title": "Cinema Seat Allocation",
+      "problem_id": 1386,
+      "problem_link": "https://leetcode.com/problems/cinema-seat-allocation/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Find the Distance Value Between Two Arrays",
+      "problem_id": 1385,
+      "problem_link": "https://leetcode.com/problems/find-the-distance-value-between-two-arrays/",
+      "platform": "LeetCode",
+      "pattern_index": 269
+    },
+    {
+      "problem_title": "Minimum Cost to Make at Least One Valid Path in a Grid",
+      "problem_id": 1368,
+      "problem_link": "https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/",
+      "platform": "LeetCode",
+      "pattern_index": 260
+    },
+    {
+      "problem_title": "Linked List in Binary Tree",
+      "problem_id": 1367,
+      "problem_link": "https://leetcode.com/problems/linked-list-in-binary-tree/",
+      "platform": "LeetCode",
+      "pattern_index": 289
     }
   ]
 }
