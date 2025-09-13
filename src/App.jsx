@@ -51,13 +51,13 @@ const PlatformIcon = ({ platform, className }) => {
         <div className={className}>
           {/* Light mode icon */}
           <img
-            src="/src/assets/leetcode_light.png"
+            src="/public/leetcode_light.png"
             alt="LeetCode Light Icon"
             className="block dark:hidden"
           />
           {/* Dark mode icon */}
           <img
-            src="/src/assets/leetcode_dark.png"
+            src="/public/leetcode_dark.png"
             alt="LeetCode Dark Icon"
             className="hidden dark:block"
           />
