@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import algoData from '/src/data.json'
+import React, { useState, useEffect, useMemo } from "react";
+import algoData from "/src/data.json";
+
+// Helper to create a composite key so same numeric id across different
+// platforms are treated as distinct items.
+const compositeKey = (problem) =>
+  `${String(problem.problem_id)}__${String(problem.platform).toLowerCase()}`;
 
 const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -14,7 +19,8 @@ const useLocalStorage = (key, initialValue) => {
 
   const setValue = (value) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
@@ -26,24 +32,79 @@ const useLocalStorage = (key, initialValue) => {
 };
 
 const CheckIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
 const BookmarkIcon = ({ className, isFilled }) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={isFilled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-    </svg>
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill={isFilled ? "currentColor" : "none"}
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+    />
+  </svg>
 );
 
 const SunIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2" />
+    <path d="M12 20v2" />
+    <path d="m4.93 4.93 1.41 1.41" />
+    <path d="m17.66 17.66 1.41 1.41" />
+    <path d="M2 12h2" />
+    <path d="M20 12h2" />
+    <path d="m6.34 17.66-1.41 1.41" />
+    <path d="m19.07 4.93-1.41 1.41" />
+  </svg>
 );
 
 const MoonIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+  </svg>
 );
+
 const PlatformIcon = ({ platform, className }) => {
   switch (platform.toLowerCase()) {
     case "leetcode":
@@ -80,20 +141,22 @@ const HomePage = ({ setPage, completedCount, totalCount }) => (
       Welcome to AlgoVerse
     </h1>
     <p className="mt-4 text-lg md:text-xl max-w-2xl text-gray-600 dark:text-gray-400">
-      Your structured guide to mastering algorithmic patterns. Track your progress, create custom problem sets, and conquer the coding interview.
+      Your structured guide to mastering algorithmic patterns. Track your
+      progress, create custom problem sets, and conquer the coding interview.
     </p>
 
-    { completedCount > 0 && <p className="mt-6 text-md font-medium text-gray-700 dark:text-gray-300">
-You've completed 
-<span className="mx-1 text-green-600 dark:text-green-400 text-2xl font-semibold">
-  {completedCount}
-</span> 
-of {totalCount} problems. Keep up the great work!
-
-    </p>}
+    {completedCount > 0 && (
+      <p className="mt-6 text-md font-medium text-gray-700 dark:text-gray-300">
+        You've completed
+        <span className="mx-1 text-green-600 dark:text-green-400 text-2xl font-semibold">
+          {completedCount}
+        </span>
+        of {totalCount} problems. Keep up the great work!
+      </p>
+    )}
 
     <button
-      onClick={() => setPage('patterns')}
+      onClick={() => setPage("patterns")}
       className="mt-8 px-8 py-3 bg-black text-white dark:bg-white dark:text-black font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-300"
     >
       Explore Patterns
@@ -101,21 +164,35 @@ of {totalCount} problems. Keep up the great work!
   </div>
 );
 
-
-
-const ProblemItem = ({ problem, isCompleted, onToggleComplete, onSave, problemSets }) => {
-  const isProblemSaved = Object.values(problemSets).some(set =>
-    set.includes(problem.problem_id)
+const ProblemItem = ({
+  problem,
+  isCompleted,
+  onToggleComplete,
+  onSave,
+  problemSets,
+}) => {
+  const isProblemSaved = Object.values(problemSets).some((set) =>
+    set.includes(compositeKey(problem))
   );
 
   return (
     <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-100/50 dark:hover:bg-white/5 transition-colors duration-200">
       <div className="flex items-center space-x-4">
         <button
-          onClick={() => onToggleComplete(problem.problem_id)}
-          className={`w-6 h-6 flex-shrink-0 rounded-md border-2 flex items-center justify-center transition-all duration-300 ${isCompleted ? 'bg-black border-black dark:bg-white dark:border-white' : 'border-gray-300 dark:border-gray-600'}`}
+          onClick={() => onToggleComplete(problem)}
+          className={`w-6 h-6 flex-shrink-0 rounded-md border-2 flex items-center justify-center transition-all duration-300 ${
+            isCompleted
+              ? "bg-black border-black dark:bg-white dark:border-white"
+              : "border-gray-300 dark:border-gray-600"
+          }`}
         >
-          {isCompleted && <CheckIcon className={`w-4 h-4 ${isCompleted ? 'text-white dark:text-black' : ''}`} />}
+          {isCompleted && (
+            <CheckIcon
+              className={`w-4 h-4 ${
+                isCompleted ? "text-white dark:text-black" : ""
+              }`}
+            />
+          )}
         </button>
         <p>{problem.problem_id}.</p>
         <a
@@ -135,7 +212,11 @@ const ProblemItem = ({ problem, isCompleted, onToggleComplete, onSave, problemSe
         <button
           onClick={() => onSave(problem)}
           title={isProblemSaved ? "Manage saved sets" : "Save problem"}
-          className={`transition-colors ${isProblemSaved ? "text-black dark:text-white" : "text-gray-400 hover:text-black dark:hover:text-white"}`}
+          className={`transition-colors ${
+            isProblemSaved
+              ? "text-black dark:text-white"
+              : "text-gray-400 hover:text-black dark:hover:text-white"
+          }`}
         >
           <BookmarkIcon className="w-5 h-5" isFilled={isProblemSaved} />
         </button>
@@ -144,211 +225,419 @@ const ProblemItem = ({ problem, isCompleted, onToggleComplete, onSave, problemSe
   );
 };
 
+const PatternCard = ({
+  pattern,
+  problems,
+  completedProblems,
+  onToggleComplete,
+  onSave,
+  problemSets,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-const PatternCard = ({ pattern, problems, completedProblems, onToggleComplete, onSave, problemSets }) => {    const [isOpen, setIsOpen] = useState(false);
-    
-    const completedCount = useMemo(() => {
-        return problems.filter(p => completedProblems.includes(p.problem_id)).length;
-    }, [problems, completedProblems]);
-    
-    const progress = problems.length > 0 ? (completedCount / problems.length) * 100 : 0;
-    const progressText = Math.round(progress);
+  const completedCount = useMemo(
+    () =>
+      problems.filter((p) => completedProblems.includes(compositeKey(p)))
+        .length,
+    [problems, completedProblems]
+  );
 
-    return (
-        <div className="border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-black shadow-sm transition-shadow hover:shadow-lg">
-            <button onClick={() => setIsOpen(!isOpen)} className="w-full p-4 text-left flex justify-between items-center">
-                <div>
-                    <h3 className="font-semibold text-lg text-black dark:text-white">{pattern}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {completedCount} / {problems.length} problems completed
-                    </p>
-                </div>
-                <div className="flex items-center space-x-3">
-                    <div className="relative w-28 bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                        <div
-                            className="bg-black dark:bg-white h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${progress}%` }}
-                        ></div>
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {progressText}%
-                    </span>
-                    <svg
-                        className={`w-6 h-6 text-gray-500 transition-transform transform ${isOpen ? "rotate-180" : ""}`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-            </button>
-            {isOpen && (
-                <div className="border-t border-gray-200 dark:border-gray-800">
-                    {problems.map((problem) => (
-  <ProblemItem
-    key={problem.problem_id}
-    problem={problem}
-    isCompleted={completedProblems.includes(problem.problem_id)}
-    onToggleComplete={onToggleComplete}
-    onSave={onSave}
-    problemSets={problemSets} 
-  />
+  const progress =
+    problems.length > 0 ? (completedCount / problems.length) * 100 : 0;
+  const progressText = Math.round(progress);
 
-                    ))}
-                </div>
-            )}
+  return (
+    <div className="border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-black shadow-sm transition-shadow hover:shadow-lg">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-4 text-left flex justify-between items-center"
+      >
+        <div>
+          <h3 className="font-semibold text-lg text-black dark:text-white">
+            {pattern}
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {completedCount} / {problems.length} problems completed
+          </p>
         </div>
-    );
+        <div className="flex items-center space-x-3">
+          <div className="relative w-28 bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-green-500 h-2 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {progressText}%
+          </span>
+          <svg
+            className={`w-6 h-6 text-gray-500 transition-transform transform ${
+              isOpen ? "rotate-180" : ""
+            }`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </button>
+      {isOpen && (
+        <div className="border-t border-gray-200 dark:border-gray-800">
+          {problems.map((problem) => (
+            <ProblemItem
+              key={compositeKey(problem)}
+              problem={problem}
+              isCompleted={completedProblems.includes(compositeKey(problem))}
+              onToggleComplete={onToggleComplete}
+              onSave={onSave}
+              problemSets={problemSets}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
+const PatternsPage = ({
+  problemsByPattern,
+  completedProblems,
+  onToggleComplete,
+  onSave,
+  problemSets,
+  completedCount,
+  totalCount,
+  allProblems,
+  uniqueProblems,
+}) => {
+  const [showPlatforms, setShowPlatforms] = useState(false);
 
-const PatternsPage = ({ problemsByPattern, completedProblems, onToggleComplete, onSave, problemSets }) => (
+  const overallProgress =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+  const completedByPlatform = useMemo(() => {
+    const platforms = {};
+    (completedProblems || []).forEach((key) => {
+      const parts = String(key).split("__");
+      if (parts.length < 2) return;
+      const plat = parts[1];
+      platforms[plat] = (platforms[plat] || 0) + 1;
+    });
+    return platforms;
+  }, [completedProblems]);
+
+  const totalByPlatform = useMemo(() => {
+    const platforms = {};
+    (uniqueProblems || []).forEach((problem) => {
+      const plat = problem.platform.toLowerCase();
+      platforms[plat] = (platforms[plat] || 0) + 1;
+    });
+    return platforms;
+  }, [uniqueProblems]);
+
+  return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-black dark:text-white mb-8">Algorithm Patterns</h1>
-        <div className="space-y-4">
-            {Object.entries(problemsByPattern).map(([pattern, problems]) => (
-                <PatternCard
-                    key={pattern}
-                    pattern={pattern}
-                    problems={problems}
-                    completedProblems={completedProblems}
-                    onToggleComplete={onToggleComplete}
-                    onSave={onSave}
-                    problemSets={problemSets}
-                />
-            ))}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-black dark:text-white text-center mb-8">
+          Algorithm Patterns
+        </h1>
+        <div className="max-w-4xl mx-auto">
+          <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-black dark:text-white">
+                Progress
+              </h2>
+              <button
+                onClick={() => setShowPlatforms(!showPlatforms)}
+                className="px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                {showPlatforms ? "Overall" : "Platform Breakdown"}
+              </button>
+            </div>
+
+            {!showPlatforms && (
+              <div className="flex flex-col items-center w-full">
+                <div className="text-5xl font-bold text-green-600 dark:text-green-400">
+                  {completedCount}
+                </div>
+                <p className="mt-1 text-gray-600 dark:text-gray-400">
+                  of {totalCount} problems
+                </p>
+                <div className="w-full mt-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-4 bg-green-500 rounded-full transition-all duration-500"
+                      style={{ width: `${overallProgress}%` }}
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500 text-center">
+                    {overallProgress.toFixed(1)}% progress
+                  </p>
+                </div>
+                <p className="mt-4 text-base font-medium text-gray-700 dark:text-gray-300 text-center">
+                  {overallProgress === 0
+                    ? "Let's get started 🚀"
+                    : overallProgress < 30
+                    ? "Good start, keep going! 💡"
+                    : overallProgress < 70
+                    ? "Nice work, you're making great progress! 🔥"
+                    : overallProgress < 100
+                    ? "Almost there, keep it up! 💪"
+                    : "Amazing! You've completed everything 🎉"}
+                </p>
+              </div>
+            )}
+
+            {showPlatforms && (
+              <div className="space-y-3 mt-2 max-h-[480px] overflow-y-auto pr-2">
+                {Object.entries(totalByPlatform).length === 0 ? (
+                  <p className="text-sm text-gray-500">No platforms found.</p>
+                ) : (
+                  Object.entries(totalByPlatform).map(([plat, total]) => {
+                    const completed = completedByPlatform[plat] || 0;
+                    const percent = total > 0 ? (completed / total) * 100 : 0;
+
+                    return (
+                      <div
+                        key={plat}
+                        className="flex items-center justify-between rounded-lg p-3 bg-gray-50 dark:bg-gray-900"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <PlatformIcon platform={plat} className="w-6 h-6" />
+                          <span className="capitalize text-gray-700 dark:text-gray-300">
+                            {plat}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-3 w-1/2">
+                          <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
+                            {percent.toFixed(1)}%
+                          </span>
+
+                          <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className="h-2 bg-green-500 rounded-full transition-all duration-500"
+                              style={{ width: `${percent}%` }}
+                            />
+                          </div>
+
+                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                            {completed}/{total}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
         </div>
+      </div>
+
+      <div className="space-y-4">
+        {Object.entries(problemsByPattern).map(([pattern, problems]) => (
+          <PatternCard
+            key={pattern}
+            pattern={pattern}
+            problems={problems}
+            completedProblems={completedProblems}
+            onToggleComplete={onToggleComplete}
+            onSave={onSave}
+            problemSets={problemSets}
+          />
+        ))}
+      </div>
     </div>
-);
+  );
+};
 
 const SavedProblemsPage = ({ problemSets, setProblemSets, allProblems }) => {
-    const [newSetName, setNewSetName] = useState("");
-    const [confirmDelete, setConfirmDelete] = useState(null);
+  const [newSetName, setNewSetName] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
-    const handleCreateSet = (e) => {
-        e.preventDefault();
-        if (newSetName && !problemSets[newSetName]) {
-            setProblemSets(prev => ({ ...prev, [newSetName]: [] }));
-            setNewSetName("");
-        }
-    };
-    
-    const requestDeleteSet = (setName) => {
-        setConfirmDelete(setName);
-    };
+  const handleCreateSet = (e) => {
+    e.preventDefault();
+    if (newSetName && !problemSets[newSetName]) {
+      setProblemSets((prev) => ({ ...prev, [newSetName]: [] }));
+      setNewSetName("");
+    }
+  };
 
-    const executeDeleteSet = () => {
-        if (!confirmDelete) return;
-        setProblemSets(prev => {
-            const newSets = { ...prev };
-            delete newSets[confirmDelete];
-            return newSets;
-        });
-        setConfirmDelete(null); 
-    };
-    
-    const handleRemoveProblem = (setName, problemId) => {
-        setProblemSets(prev => ({
-            ...prev,
-            [setName]: prev[setName].filter(id => id !== problemId)
-        }));
-    };
+  const requestDeleteSet = (setName) => setConfirmDelete(setName);
+  const executeDeleteSet = () => {
+    if (!confirmDelete) return;
+    setProblemSets((prev) => {
+      const newSets = { ...prev };
+      delete newSets[confirmDelete];
+      return newSets;
+    });
+    setConfirmDelete(null);
+  };
 
-    return (
-        <>
-            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl font-bold text-black dark:text-white mb-8">My Problem Sets</h1>
-                
-                <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 p-6 rounded-lg shadow-sm mb-8">
-                    <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Create a New Set</h2>
-                    <form onSubmit={handleCreateSet} className="flex space-x-4">
-                        <input
-                            type="text"
-                            value={newSetName}
-                            onChange={(e) => setNewSetName(e.target.value)}
-                            placeholder="e.g., 'Dynamic Programming Practice'"
-                            className="flex-grow p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-transparent focus:ring-black focus:border-black dark:focus:ring-white dark:focus:border-white text-black dark:text-white"
-                        />
-                        <button type="submit" className="px-4 py-2 bg-black text-white dark:bg-white dark:text-black font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
-                            Create Set
-                        </button>
-                    </form>
-                </div>
+  const handleRemoveProblem = (setName, compositeId) => {
+    setProblemSets((prev) => ({
+      ...prev,
+      [setName]: prev[setName].filter((id) => id !== compositeId),
+    }));
+  };
 
-                <div className="space-y-6">
-                    {Object.keys(problemSets).length === 0 ? (
-                        <p className="text-center text-gray-500 dark:text-gray-400 py-10">You haven't created any problem sets yet. Use the form above to start!</p>
-                    ) : (
-                        Object.entries(problemSets).map(([setName, problemIds]) => (
-                            <div key={setName} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm">
-                                <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
-                                    <h3 className="font-semibold text-lg text-black dark:text-white">{setName}</h3>
-                                    <button onClick={() => requestDeleteSet(setName)} className="text-sm text-red-600 hover:underline">Delete Set</button>
-                                </div>
-                                <div>
-                                    {problemIds.length === 0 ? (
-                                        <p className="p-4 text-gray-500 dark:text-gray-400">This set is empty. Save problems from the 'Patterns' page.</p>
-                                    ) : (
-                                        problemIds.map(id => {
-                                            const problem = allProblems.find(p => p.problem_id === id);
-                                            if (!problem) return null;
-                                            return (
-                                                <div key={id} className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-800 last:border-b-0">
-                                                    <a href={problem.problem_link} target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-200 hover:underline">
-                                                        {problem.problem_title}
-                                                    </a>
-                                                    <button onClick={() => handleRemoveProblem(setName, id)} className="text-xs text-gray-500 hover:text-red-600">Remove</button>
-                                                </div>
-                                            );
-                                        })
-                                    )}
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </div>
-            <ConfirmModal 
-                isOpen={!!confirmDelete}
-                onClose={() => setConfirmDelete(null)}
-                onConfirm={executeDeleteSet}
-                title="Delete Problem Set"
-                message={`Are you sure you want to delete the "${confirmDelete}" problem set? This action cannot be undone.`}
+  return (
+    <>
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-black dark:text-white mb-8">
+          My Problem Sets
+        </h1>
+
+        <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 p-6 rounded-lg shadow-sm mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
+            Create a New Set
+          </h2>
+          <form onSubmit={handleCreateSet} className="flex space-x-4">
+            <input
+              type="text"
+              value={newSetName}
+              onChange={(e) => setNewSetName(e.target.value)}
+              placeholder="e.g., 'Dynamic Programming Practice'"
+              className="flex-grow p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-transparent focus:ring-black focus:border-black dark:focus:ring-white dark:focus:border-white text-black dark:text-white"
             />
-        </>
-    );
+            <button
+              type="submit"
+              className="px-4 py-2 bg-black text-white dark:bg-white dark:text-black font-semibold rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+            >
+              Create Set
+            </button>
+          </form>
+        </div>
+
+        <div className="space-y-6">
+          {Object.keys(problemSets).length === 0 ? (
+            <p className="text-center text-gray-500 dark:text-gray-400 py-10">
+              You haven't created any problem sets yet. Use the form above to
+              start!
+            </p>
+          ) : (
+            Object.entries(problemSets).map(([setName, problemIds]) => (
+              <div
+                key={setName}
+                className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm"
+              >
+                <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
+                  <h3 className="font-semibold text-lg text-black dark:text-white">
+                    {setName}
+                  </h3>
+                  <button
+                    onClick={() => requestDeleteSet(setName)}
+                    className="text-sm text-red-600 hover:underline"
+                  >
+                    Delete Set
+                  </button>
+                </div>
+                <div>
+                  {problemIds.length === 0 ? (
+                    <p className="p-4 text-gray-500 dark:text-gray-400">
+                      This set is empty. Save problems from the 'Patterns' page.
+                    </p>
+                  ) : (
+                    problemIds.map((compositeId) => {
+                      const problem = allProblems.find(
+                        (p) => compositeKey(p) === compositeId
+                      );
+                      if (!problem) return null;
+                      return (
+                        <div
+                          key={compositeId}
+                          className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-800 last:border-b-0"
+                        >
+                          <a
+                            href={problem.problem_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-800 dark:text-gray-200 hover:underline"
+                          >
+                            {problem.problem_title}
+                          </a>
+                          <button
+                            onClick={() =>
+                              handleRemoveProblem(setName, compositeId)
+                            }
+                            className="text-xs text-gray-500 hover:text-red-600"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <ConfirmModal
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={executeDeleteSet}
+        title="Delete Problem Set"
+        message={`Are you sure you want to delete the "${confirmDelete}" problem set? This action cannot be undone.`}
+      />
+    </>
+  );
 };
 
-const SaveProblemModal = ({ isOpen, onClose, problem, problemSets, setProblemSets }) => {
-  if (!isOpen) return null;
+const SaveProblemModal = ({
+  isOpen,
+  onClose,
+  problem,
+  problemSets,
+  setProblemSets,
+}) => {
+  if (!isOpen || !problem) return null;
+
+  const key = compositeKey(problem);
 
   const toggleProblemInSet = (setName) => {
-    setProblemSets(prev => {
-      const exists = prev[setName].includes(problem.problem_id);
+    setProblemSets((prev) => {
+      const exists = prev[setName].includes(key);
       return {
         ...prev,
         [setName]: exists
-          ? prev[setName].filter(id => id !== problem.problem_id) // remove
-          : [...prev[setName], problem.problem_id] // add
+          ? prev[setName].filter((id) => id !== key)
+          : [...prev[setName], key],
       };
     });
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
       <div
         className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Save Problem</h2>
-        <p className="mb-4 text-gray-600 dark:text-gray-300">"{problem.problem_title}"</p>
-        <h3 className="font-medium mb-2 text-gray-700 dark:text-gray-200">Add / Remove from sets:</h3>
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          Save Problem
+        </h2>
+        <p className="mb-4 text-gray-600 dark:text-gray-300">
+          "{problem.problem_title}"
+        </p>
+        <h3 className="font-medium mb-2 text-gray-700 dark:text-gray-200">
+          Add / Remove from sets:
+        </h3>
         <div className="space-y-2 max-h-60 overflow-y-auto">
           {Object.keys(problemSets).length > 0 ? (
-            Object.keys(problemSets).map(setName => {
-              const isInSet = problemSets[setName].includes(problem.problem_id);
+            Object.keys(problemSets).map((setName) => {
+              const isInSet = problemSets[setName].includes(key);
               return (
                 <button
                   key={setName}
@@ -380,101 +669,175 @@ const SaveProblemModal = ({ isOpen, onClose, problem, problemSets, setProblemSet
   );
 };
 
-
 const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}>
-            <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">{title}</h2>
-                <p className="mb-6 text-gray-600 dark:text-gray-300">{message}</p>
-                <div className="flex justify-end space-x-4">
-                    <button onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
-                        Cancel
-                    </button>
-                    <button onClick={onConfirm} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                        Confirm
-                    </button>
-                </div>
-            </div>
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          {title}
+        </h2>
+        <p className="mb-6 text-gray-600 dark:text-gray-300">{message}</p>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+          >
+            Confirm
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-
 export default function App() {
-  const [page, setPage] = useState('home');
-  const [completedProblems, setCompletedProblems] = useLocalStorage('completedProblems', []);
-  const [problemSets, setProblemSets] = useLocalStorage('problemSets', {});
-  const [theme, setTheme] = useLocalStorage('theme', 'light');
-  
+  const [page, setPage] = useState("home");
+  const [completedProblems, setCompletedProblems] = useLocalStorage(
+    "completedProblems",
+    []
+  );
+  const [problemSets, setProblemSets] = useLocalStorage("problemSets", {});
+  const [theme, setTheme] = useLocalStorage("theme", "light");
+
   const [modalOpen, setModalOpen] = useState(false);
   const [problemToSave, setProblemToSave] = useState(null);
 
   useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
-  
-  const handleToggleComplete = (problemId) => {
-    setCompletedProblems(prev =>
-      prev.includes(problemId)
-        ? prev.filter(id => id !== problemId)
-        : [...prev, problemId]
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  const allProblems = algoData["problems"] || [];
+
+  // Create uniqueProblems keyed by compositeKey so same id on different
+  // platforms remain distinct.
+  const uniqueProblems = Array.from(
+    new Map(allProblems.map((p) => [compositeKey(p), p])).values()
+  );
+  const totalProblems = uniqueProblems.length;
+
+  // Migrate old localStorage formats (legacy plain problem_id values) ->
+  // composite keys. This attempts to preserve previous "mark by id" behavior
+  // by converting old ids to composite keys for all matching platform entries.
+  useEffect(() => {
+    // migrate completedProblems
+    if (Array.isArray(completedProblems) && completedProblems.length > 0) {
+      const needsMigration = completedProblems.some(
+        (k) => !String(k).includes("__")
+      );
+      if (needsMigration) {
+        setCompletedProblems((prev) => {
+          const newKeys = new Set();
+          prev.forEach((oldId) => {
+            const matches = allProblems.filter(
+              (p) => String(p.problem_id) === String(oldId)
+            );
+            matches.forEach((p) => newKeys.add(compositeKey(p)));
+          });
+          return Array.from(newKeys);
+        });
+      }
+    }
+
+    // migrate problemSets
+    if (problemSets && Object.keys(problemSets).length > 0) {
+      const needsMigrationForAny = Object.values(problemSets).some((ids) =>
+        ids.some((id) => !String(id).includes("__"))
+      );
+      if (needsMigrationForAny) {
+        setProblemSets((prev) => {
+          const newSets = {};
+          Object.entries(prev).forEach(([setName, ids]) => {
+            const needs = ids.some((id) => !String(id).includes("__"));
+            if (!needs) {
+              newSets[setName] = ids;
+            } else {
+              const newIds = new Set();
+              ids.forEach((oldId) => {
+                const matches = allProblems.filter(
+                  (p) => String(p.problem_id) === String(oldId)
+                );
+                matches.forEach((p) => newIds.add(compositeKey(p)));
+              });
+              newSets[setName] = Array.from(newIds);
+            }
+          });
+          return newSets;
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleToggleComplete = (problem) => {
+    const key = compositeKey(problem);
+    setCompletedProblems((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
-  
+
   const handleSaveProblem = (problem) => {
     setProblemToSave(problem);
     setModalOpen(true);
   };
 
-const allProblems = algoData['problems'];
-
-const uniqueProblems = Array.from(
-  new Map(allProblems.map(p => [p.problem_id, p])).values()
-);
-
-const totalProblems = uniqueProblems.length;
-
-
-
   const problemsByPattern = useMemo(() => {
     return algoData.patterns.reduce((acc, pattern, index) => {
-      acc[pattern] = algoData.problems.filter(p => p.pattern_index === index);
+      acc[pattern] = algoData.problems.filter((p) => p.pattern_index === index);
       return acc;
     }, {});
   }, []);
 
   const renderPage = () => {
     switch (page) {
-      case 'patterns':
-        return <PatternsPage 
-                    problemsByPattern={problemsByPattern} 
-                    completedProblems={completedProblems}
-                    onToggleComplete={handleToggleComplete}
-                    onSave={handleSaveProblem}
-                    problemSets={problemSets} 
-
-                />;
-      case 'saved':
-        return <SavedProblemsPage 
-                    problemSets={problemSets} 
-                    setProblemSets={setProblemSets}
-                    allProblems={algoData.problems}
-               />;
-      case 'home':
+      case "patterns":
+        return (
+          <PatternsPage
+            problemsByPattern={problemsByPattern}
+            completedProblems={completedProblems}
+            onToggleComplete={handleToggleComplete}
+            onSave={handleSaveProblem}
+            problemSets={problemSets}
+            completedCount={completedProblems.length}
+            totalCount={totalProblems}
+            allProblems={allProblems}
+            uniqueProblems={uniqueProblems}
+          />
+        );
+      case "saved":
+        return (
+          <SavedProblemsPage
+            problemSets={problemSets}
+            setProblemSets={setProblemSets}
+            allProblems={allProblems}
+          />
+        );
+      case "home":
       default:
-        return <HomePage 
-                    setPage={setPage} 
-                    completedCount={completedProblems.length}
-                    totalCount={totalProblems}
-                />;
+        return (
+          <HomePage
+            setPage={setPage}
+            completedCount={completedProblems.length}
+            totalCount={totalProblems}
+          />
+        );
     }
   };
 
@@ -484,27 +847,53 @@ const totalProblems = uniqueProblems.length;
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-6">
-              <button onClick={() => setPage('home')} className="flex items-center space-x-2">
-                 <svg className="w-8 h-8 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              <button
+                onClick={() => setPage("home")}
+                className="flex items-center space-x-2"
+              >
+                <svg
+                  className="w-8 h-8 text-black dark:text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                  />
                 </svg>
-                <span className="text-2xl font-semibold text-black dark:text-white">AlgoVerse</span>
+                <span className="text-2xl font-semibold text-black dark:text-white">
+                  AlgoVerse
+                </span>
               </button>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <button onClick={() => setPage('patterns')} className="font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Patterns</button>
-              <button onClick={() => setPage('saved')} className="font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">My Sets</button>
-              <button onClick={toggleTheme} className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
-                {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+              <button
+                onClick={() => setPage("patterns")}
+                className="font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+              >
+                Patterns
+              </button>
+              <button
+                onClick={() => setPage("saved")}
+                className="font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+              >
+                My Sets
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+              >
+                {theme === "light" ? <MoonIcon /> : <SunIcon />}
               </button>
             </div>
           </div>
         </nav>
       </header>
 
-      <main>
-        {renderPage()}
-      </main>
+      <main>{renderPage()}</main>
 
       <SaveProblemModal
         isOpen={modalOpen}
@@ -516,4 +905,3 @@ const totalProblems = uniqueProblems.length;
     </div>
   );
 }
-
