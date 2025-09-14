@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import algoData from "/src/data.json";
 
-// Helper to create a composite key so same numeric id across different
-// platforms are treated as distinct items.
 const compositeKey = (problem) =>
   `${String(problem.problem_id)}__${String(problem.platform).toLowerCase()}`;
 
@@ -110,13 +108,11 @@ const PlatformIcon = ({ platform, className }) => {
     case "leetcode":
       return (
         <div className={className}>
-          {/* Light mode icon */}
           <img
             src="/leetcode_light.png"
             alt="LeetCode Light Icon"
             className="block dark:hidden"
           />
-          {/* Dark mode icon */}
           <img
             src="/leetcode_dark.png"
             alt="LeetCode Dark Icon"
@@ -726,18 +722,12 @@ export default function App() {
 
   const allProblems = algoData["problems"] || [];
 
-  // Create uniqueProblems keyed by compositeKey so same id on different
-  // platforms remain distinct.
   const uniqueProblems = Array.from(
     new Map(allProblems.map((p) => [compositeKey(p), p])).values()
   );
   const totalProblems = uniqueProblems.length;
 
-  // Migrate old localStorage formats (legacy plain problem_id values) ->
-  // composite keys. This attempts to preserve previous "mark by id" behavior
-  // by converting old ids to composite keys for all matching platform entries.
   useEffect(() => {
-    // migrate completedProblems
     if (Array.isArray(completedProblems) && completedProblems.length > 0) {
       const needsMigration = completedProblems.some(
         (k) => !String(k).includes("__")
@@ -756,7 +746,6 @@ export default function App() {
       }
     }
 
-    // migrate problemSets
     if (problemSets && Object.keys(problemSets).length > 0) {
       const needsMigrationForAny = Object.values(problemSets).some((ids) =>
         ids.some((id) => !String(id).includes("__"))
@@ -783,7 +772,6 @@ export default function App() {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToggleComplete = (problem) => {
