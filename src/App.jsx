@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import algoData from "/src/data.json";
+import orderData from '/src/order.json';
 
 const compositeKey = (problem) =>
-  `${String(problem.problem_id)}__${String(problem.platform).toLowerCase()}`;
+  `${String(problem.problem_id).trim()}__${String(problem.platform).trim().toLowerCase()}`;
+
 
 const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -104,7 +106,7 @@ const MoonIcon = () => (
 );
 
 const PlatformIcon = ({ platform, className }) => {
-  switch (platform.toLowerCase()) {
+  switch (platform.trim().toLowerCase()) {
     case "leetcode":
       return (
         <div className={className}>
@@ -230,13 +232,10 @@ const PatternCard = ({
   problemSets,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+const completedCount = problems.filter((p) =>
+  completedProblems.includes(compositeKey(p))
+).length;
 
-  const completedCount = useMemo(
-    () =>
-      problems.filter((p) => completedProblems.includes(compositeKey(p)))
-        .length,
-    [problems, completedProblems]
-  );
 
   const progress =
     problems.length > 0 ? (completedCount / problems.length) * 100 : 0;
@@ -302,6 +301,7 @@ const PatternCard = ({
   );
 };
 
+
 const PatternsPage = ({
   problemsByPattern,
   completedProblems,
@@ -314,6 +314,7 @@ const PatternsPage = ({
   uniqueProblems,
 }) => {
   const [showPlatforms, setShowPlatforms] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const overallProgress =
     totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
@@ -338,107 +339,129 @@ const PatternsPage = ({
     return platforms;
   }, [uniqueProblems]);
 
+  const filteredPatterns = useMemo(() => {
+    if (!searchTerm.trim()) return problemsByPattern;
+
+    const term = searchTerm.toLowerCase();
+    const result = {};
+    Object.entries(problemsByPattern).forEach(([pattern, problems]) => {
+      if (pattern.toLowerCase().includes(term)) {
+        result[pattern] = problems;
+      }
+    });
+    return result;
+  }, [searchTerm, problemsByPattern]);
+
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-black dark:text-white text-center mb-8">
-          Algorithm Patterns
-        </h1>
-        <div className="max-w-4xl mx-auto">
-          <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-black dark:text-white">
-                Progress
-              </h2>
-              <button
-                onClick={() => setShowPlatforms(!showPlatforms)}
-                className="px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                {showPlatforms ? "Overall" : "Platform Breakdown"}
-              </button>
-            </div>
+      <h1 className="text-4xl font-bold text-black dark:text-white text-center mb-8">
+        Algorithm Patterns
+      </h1>
 
-            {!showPlatforms && (
-              <div className="flex flex-col items-center w-full">
-                <div className="text-5xl font-bold text-green-600 dark:text-green-400">
-                  {completedCount}
-                </div>
-                <p className="mt-1 text-gray-600 dark:text-gray-400">
-                  of {totalCount} problems
-                </p>
-                <div className="w-full mt-4">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div
-                      className="h-4 bg-green-500 rounded-full transition-all duration-500"
-                      style={{ width: `${overallProgress}%` }}
-                    />
-                  </div>
-                  <p className="mt-2 text-sm text-gray-500 text-center">
-                    {overallProgress.toFixed(1)}% progress
-                  </p>
-                </div>
-                <p className="mt-4 text-base font-medium text-gray-700 dark:text-gray-300 text-center">
-                  {overallProgress === 0
-                    ? "Let's get started 🚀"
-                    : overallProgress < 30
-                    ? "Good start, keep going! 💡"
-                    : overallProgress < 70
-                    ? "Nice work, you're making great progress! 🔥"
-                    : overallProgress < 100
-                    ? "Almost there, keep it up! 💪"
-                    : "Amazing! You've completed everything 🎉"}
-                </p>
-              </div>
-            )}
-
-            {showPlatforms && (
-              <div className="space-y-3 mt-2 max-h-[480px] overflow-y-auto pr-2">
-                {Object.entries(totalByPlatform).length === 0 ? (
-                  <p className="text-sm text-gray-500">No platforms found.</p>
-                ) : (
-                  Object.entries(totalByPlatform).map(([plat, total]) => {
-                    const completed = completedByPlatform[plat] || 0;
-                    const percent = total > 0 ? (completed / total) * 100 : 0;
-
-                    return (
-                      <div
-                        key={plat}
-                        className="flex items-center justify-between rounded-lg p-3 bg-gray-50 dark:bg-gray-900"
-                      >
-                        <div className="flex items-center space-x-3">
-                          <PlatformIcon platform={plat} className="w-6 h-6" />
-                          <span className="capitalize text-gray-700 dark:text-gray-300">
-                            {plat}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-3 w-1/2">
-                          <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
-                            {percent.toFixed(1)}%
-                          </span>
-
-                          <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div
-                              className="h-2 bg-green-500 rounded-full transition-all duration-500"
-                              style={{ width: `${percent}%` }}
-                            />
-                          </div>
-
-                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                            {completed}/{total}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            )}
+      <div className="max-w-4xl mx-auto mb-6">
+        <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-black dark:text-white">
+              Progress
+            </h2>
+            <button
+              onClick={() => setShowPlatforms(!showPlatforms)}
+              className="px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              {showPlatforms ? "Overall" : "Platform Breakdown"}
+            </button>
           </div>
+
+          {!showPlatforms && (
+            <div className="flex flex-col items-center w-full">
+              <div className="text-5xl font-bold text-green-600 dark:text-green-400">
+                {completedCount}
+              </div>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">
+                of {totalCount} problems
+              </p>
+              <div className="w-full mt-4">
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div
+                    className="h-4 bg-green-500 rounded-full transition-all duration-500"
+                    style={{ width: `${overallProgress}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-sm text-gray-500 text-center">
+                  {overallProgress.toFixed(1)}% progress
+                </p>
+              </div>
+              <p className="mt-4 text-base font-medium text-gray-700 dark:text-gray-300 text-center">
+                {overallProgress === 0
+                  ? "Let's get started 🚀"
+                  : overallProgress < 30
+                  ? "Good start, keep going! 💡"
+                  : overallProgress < 70
+                  ? "Nice work, you're making great progress! 🔥"
+                  : overallProgress < 100
+                  ? "Almost there, keep it up! 💪"
+                  : "Amazing! You've completed everything 🎉"}
+              </p>
+            </div>
+          )}
+
+          {showPlatforms && (
+            <div className="space-y-3 mt-2 max-h-[480px] overflow-y-auto pr-2">
+              {Object.entries(totalByPlatform).length === 0 ? (
+                <p className="text-sm text-gray-500">No platforms found.</p>
+              ) : (
+                Object.entries(totalByPlatform).map(([plat, total]) => {
+                  const completed = completedByPlatform[plat] || 0;
+                  const percent = total > 0 ? (completed / total) * 100 : 0;
+
+                  return (
+                    <div
+                      key={plat}
+                      className="flex items-center justify-between rounded-lg p-3 bg-gray-50 dark:bg-gray-900"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <PlatformIcon platform={plat} className="w-6 h-6" />
+                        <span className="capitalize text-gray-700 dark:text-gray-300">
+                          {plat}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3 w-1/2">
+                        <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
+                          {percent.toFixed(1)}%
+                        </span>
+
+                        <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div
+                            className="h-2 bg-green-500 rounded-full transition-all duration-500"
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+
+                        <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                          {completed}/{total}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="space-y-4">
-        {Object.entries(problemsByPattern).map(([pattern, problems]) => (
+      <div className="max-w-2xl mb-6">
+        <input
+          type="text"
+          placeholder="Search patterns..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-1/2 p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-black dark:text-white focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white"
+        />
+      </div>
+
+      <div className="space-y-4 max-w-7xl mx-auto">
+        {Object.entries(filteredPatterns).map(([pattern, problems]) => (
           <PatternCard
             key={pattern}
             pattern={pattern}
@@ -449,11 +472,16 @@ const PatternsPage = ({
             problemSets={problemSets}
           />
         ))}
+
+        {Object.keys(filteredPatterns).length === 0 && (
+          <p className="text-center text-gray-500 dark:text-gray-400 py-10">
+            No patterns found matching "{searchTerm}"
+          </p>
+        )}
       </div>
     </div>
   );
 };
-
 const SavedProblemsPage = ({ problemSets, setProblemSets, allProblems }) => {
   const [newSetName, setNewSetName] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null);
@@ -625,7 +653,7 @@ const SaveProblemModal = ({
           Save Problem
         </h2>
         <p className="mb-4 text-gray-600 dark:text-gray-300">
-          "{problem.problem_title}"
+          "{problem.problem_title}" ({problem.platform})
         </p>
         <h3 className="font-medium mb-2 text-gray-700 dark:text-gray-200">
           Add / Remove from sets:
@@ -727,71 +755,52 @@ export default function App() {
   );
   const totalProblems = uniqueProblems.length;
 
-  useEffect(() => {
-    if (Array.isArray(completedProblems) && completedProblems.length > 0) {
-      const needsMigration = completedProblems.some(
-        (k) => !String(k).includes("__")
-      );
-      if (needsMigration) {
-        setCompletedProblems((prev) => {
-          const newKeys = new Set();
-          prev.forEach((oldId) => {
-            const matches = allProblems.filter(
-              (p) => String(p.problem_id) === String(oldId)
-            );
-            matches.forEach((p) => newKeys.add(compositeKey(p)));
-          });
-          return Array.from(newKeys);
-        });
-      }
-    }
-
-    if (problemSets && Object.keys(problemSets).length > 0) {
-      const needsMigrationForAny = Object.values(problemSets).some((ids) =>
-        ids.some((id) => !String(id).includes("__"))
-      );
-      if (needsMigrationForAny) {
-        setProblemSets((prev) => {
-          const newSets = {};
-          Object.entries(prev).forEach(([setName, ids]) => {
-            const needs = ids.some((id) => !String(id).includes("__"));
-            if (!needs) {
-              newSets[setName] = ids;
-            } else {
-              const newIds = new Set();
-              ids.forEach((oldId) => {
-                const matches = allProblems.filter(
-                  (p) => String(p.problem_id) === String(oldId)
-                );
-                matches.forEach((p) => newIds.add(compositeKey(p)));
-              });
-              newSets[setName] = Array.from(newIds);
-            }
-          });
-          return newSets;
-        });
-      }
-    }
-  }, []);
-
-  const handleToggleComplete = (problem) => {
-    const key = compositeKey(problem);
-    setCompletedProblems((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+useEffect(() => {
+  if (Array.isArray(completedProblems) && completedProblems.length > 0) {
+    const validKeys = completedProblems.filter((key) =>
+      allProblems.some((p) => {
+        const [id, platform] = key.split("__");
+        return (
+          String(p.problem_id) === String(id) &&
+          String(p.platform).trim().toLowerCase() === String(platform).trim().toLowerCase()
+        );
+      })
     );
-  };
+
+    if (validKeys.length !== completedProblems.length) {
+      setCompletedProblems(validKeys);
+    }
+  }
+}, [allProblems]);
+
+ const handleToggleComplete = (problem) => {
+  const key = compositeKey(problem);
+  setCompletedProblems((prev) =>
+    prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+  );
+};
 
   const handleSaveProblem = (problem) => {
     setProblemToSave(problem);
     setModalOpen(true);
   };
 
-  const problemsByPattern = useMemo(() => {
-    return algoData.patterns.reduce((acc, pattern, index) => {
-      acc[pattern] = algoData.problems.filter((p) => p.pattern_index === index);
-      return acc;
-    }, {});
-  }, []);
+const problemsByPattern = useMemo(() => {
+  const allPatterns = Object.values(algoData.patterns); 
+  const remainingPatterns = allPatterns.filter(p => !orderData.includes(p));
+
+  const finalOrder = [...orderData, ...remainingPatterns];
+
+  const result = {};
+  finalOrder.forEach(pattern => {
+    result[pattern] = algoData.problems.filter(
+      (p) => algoData.patterns[p.pattern_index] === pattern
+    );
+  });
+
+  return result;
+}, []);
+
 
   const renderPage = () => {
     switch (page) {
